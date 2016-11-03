@@ -7,15 +7,17 @@ set -x
 
 echo "start version is $VER"
 
+PAPP_NAME='papp_noop'
+
 BUILD="${BUILD}"
 VER="${VER}"
 DATE="`date --utc`"
 
 if [ "${VER}" != '${bamboo.jira.version}' ]; then
-    TAR_DIR="peek_agent_pof_$VER"
+    TAR_DIR="${PAPP_NAME}_$VER"
 else
     VER="b`date +%y%m%d.%H%M`"
-    TAR_DIR="peek_agent_pof_$VER#$BUILD"
+    TAR_DIR="${PAPP_NAME}_$VER#$BUILD"
 fi
 
 DIR="deploy/$TAR_DIR"
@@ -31,27 +33,11 @@ cp peek_agent_pof/src/run_peek_agent.py $DIR/run_agent.py
 
 
 # Source
-mv rapui/src/rapui $DIR
-mv peek_agent/src/peek_agent $DIR
-mv peek_agent_pof/src/peek_agent_pof $DIR
-mv peek_agent_pof/src/run_peek_agent.py $DIR
-mv peek_agent_pof/agent_changelog.txt $DIR
-mv peek_agent_pof/agent_version.txt $DIR
+cp -pr papp_base/src/peek_agent $DIR
+cp -pr ${PAPP_NAME}/src/${PAPP_NAME} $DIR
+cp -pr ${PAPP_NAME}/papp_changelog.txt $DIR
+cp -pr ${PAPP_NAME}/papp_version.txt $DIR
 
-# Remove unneeded RapUI components
-rm -rf $DIR/rapui/bower_components
-
-# Move the upgrade folder over
-#mv attune/upgrade $DIR
-
-# Prepare the packages
-#BUILD_DIR=`pwd`
-#cd $DIR/upgrade
-#chmod +x *.sh
-#
-#./v1_pack.sh
-#
-#cd $BUILD_DIR
 
 find $DIR -iname .git -exec rm -rf {} \; || true
 find $DIR -iname "test" -exec rm -rf {} \; 2> /dev/null || true
@@ -63,20 +49,16 @@ find $DIR -iname "*TODO*" -exec rm -rf {} \; || true
 find $DIR -iname ".idea" -exec rm -rf {} \; || true
 
 
-# Init scripts, etc
-mv peek_agent_pof/init/peek_agent_pof.init.rhel.sh $DIR
-mv peek_agent_pof/init/run_peek_agent.sh $DIR
-
 # Apply version number
 
-for f in `grep -l -r  '#PPA_VER#' .`; do
+for f in `grep -l -r  '#PAPP_VER#' .`; do
     echo "Updating version in file $f"
-    sed -i "s/#PPA_VER#/$VER/g" $f
+    sed -i "s/#PAPP_VER#/$VER/g" $f
 done
 
-for f in `grep -l -r  '#PPA_BUILD#' .`; do
+for f in `grep -l -r  '#PAPP_BUILD#' .`; do
     echo "Updating build in file $f"
-    sed -i "s/#PPA_BUILD#/$BUILD/g" $f
+    sed -i "s/#PAPP_BUILD#/$BUILD/g" $f
 done
 
 for f in `grep -l -r  '#BUILD_DATE#' .`; do
