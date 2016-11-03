@@ -1,4 +1,4 @@
-from client.PappClient import PappClient
+from client.PappClientBase import PappClient
 
 
 def makeClient(platformClient):
