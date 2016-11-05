@@ -1,4 +1,4 @@
-class PappMainBase:
+class PappServerMainBase:
 
     def __init__(self, platform):
         self._platform = platform
@@ -7,7 +7,7 @@ class PappMainBase:
     def start(self):
         pass
 
-    def stop(self):
+    def stopt(self):
         pass
 
     def configUrl(self):
@@ -25,10 +25,3 @@ class PappMainBase:
     def publishedStorageApi(self, requestingPappName):
         return None
 
-    @property
-    def publishedAgentApi(self, requestingPappName):
-        return None
-
-    @property
-    def publishedWorkerApi(self, requestingPappName):
-        return None
