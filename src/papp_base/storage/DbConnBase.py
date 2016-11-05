@@ -109,6 +109,9 @@ class DbConnBase:
         # os.chdir(curdir)
 
     def _doCreateAll(self, engine):
+
+        self._dbEngine.execute('CREATE SCHEMA IF NOT EXISTS "%s" '
+                               % self._metadata.schema)
         self._metadata.create_all(self._dbEngine)
 
         from alembic import command
