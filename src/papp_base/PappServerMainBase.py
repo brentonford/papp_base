@@ -7,7 +7,10 @@ class PappServerMainBase:
     def start(self):
         pass
 
-    def stopt(self):
+    def stop(self):
+        pass
+
+    def unload(self):
         pass
 
     def configUrl(self):
