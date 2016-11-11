@@ -10,6 +10,9 @@ class PappAgentMainBase:
     def stop(self):
         pass
 
+    def unload(self):
+        pass
+
     @property
     def publishedAgentApi(self, requestingPappName):
         return None

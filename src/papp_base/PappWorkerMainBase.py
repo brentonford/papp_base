@@ -10,6 +10,9 @@ class PappWorkerMainBase:
     def stop(self):
         pass
 
+    def unload(self):
+        pass
+
     @property
     def publishedWorkerApi(self, requestingPappName):
         return None
