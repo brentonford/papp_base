@@ -24,8 +24,8 @@ logger = logging.getLogger(__name__)
 
 
 class DbConnBase:
-    def __init__(self, sqlaConnectUrl, metadata, alembicDir):
-        self._sqlaConnectUrl = sqlaConnectUrl
+    def __init__(self, dbConnectString, metadata, alembicDir):
+        self._dbConnectString = dbConnectString
         self._metadata = metadata
         self._alembicDir = alembicDir
 
@@ -40,13 +40,13 @@ class DbConnBase:
         self._ScopedSession.close_all()
 
     def getPappOrmSession(self):
-        assert self._sqlaConnectUrl
+        assert self._dbConnectString
 
         if self._ScopedSession:
             return self._ScopedSession()
 
         self._dbEngine = create_engine(
-            self._sqlaConnectUrl,
+            self._dbConnectString,
             **self._dbEngineArgs
         )
 
@@ -130,7 +130,7 @@ class DbConnBase:
         cfg = dedent(cfg)
 
         cfg %= {'alembicDir': self._alembicDir,
-                'url': self._sqlaConnectUrl}
+                'url': self._dbConnectString}
 
         tempFile = NamedTemporaryFile()
         tempFile.write(cfg)
