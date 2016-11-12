@@ -5,13 +5,21 @@ class PappWorkerMainBase:
         self._initSelf()
 
     def start(self):
-        pass
+        raise NotImplementedError()
 
     def stop(self):
-        pass
+        raise NotImplementedError()
 
     def unload(self):
-        pass
+        raise NotImplementedError()
+
+    @property
+    def celeryAppIncludes(self):
+        raise NotImplementedError()
+
+    @property
+    def celeryApp(self):
+        raise NotImplementedError()
 
     @property
     def publishedWorkerApi(self, requestingPappName):
