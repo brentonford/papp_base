@@ -21,10 +21,5 @@ class PappWorkerMainBase:
     def celeryApp(self):
         raise NotImplementedError()
 
-    @property
-    def publishedWorkerApi(self, requestingPappName):
-        return None
-
-    @property
-    def publishedStorageApi(self, requestingPappName):
-        return None
+    # There are no APIs
+    # The worker threads can't access this.
