@@ -47,6 +47,10 @@ class PappServerMainBase:
         return None
 
     @property
+    def celeryApp(self):
+        raise NotImplementedError()
+
+    @property
     def publishedClientApi(self, requestingPappName):
         return None
 
