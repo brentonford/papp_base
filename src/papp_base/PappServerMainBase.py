@@ -4,6 +4,8 @@ from papp_base.storage.DbConnBase import DbConnBase
 
 
 class PappServerMainBase:
+    _title = None
+
     def __init__(self, platform):
         self._platform = platform
         self._initSelf()
@@ -43,16 +45,9 @@ class PappServerMainBase:
     def unload(self):
         pass
 
-    def configUrl(self):
-        return None
-
     @property
     def celeryApp(self):
         raise NotImplementedError()
-
-    @property
-    def publishedClientApi(self, requestingPappName):
-        return None
 
     @property
     def publishedServerApi(self, requestingPappName):
@@ -61,3 +56,8 @@ class PappServerMainBase:
     @property
     def publishedStorageApi(self, requestingPappName):
         return None
+
+    @property
+    def title(self):
+        assert self._title is not None
+        return self._title
