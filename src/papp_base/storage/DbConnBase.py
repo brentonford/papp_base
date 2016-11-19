@@ -9,12 +9,11 @@
  *
 """
 import logging
-from mutex import mutex
 from tempfile import NamedTemporaryFile
-from time import sleep
 from textwrap import dedent
+from threading import Lock
+from time import sleep
 
-import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session
 from sqlalchemy.orm import sessionmaker
@@ -33,7 +32,9 @@ class DbConnBase:
         self._ScopedSession = None
         self._dbEngineArgs = {"echo": False}
 
-        self._sequenceMutex = mutex()
+        self._sequenceMutex = Lock()
+
+        self._enableCreateAll = True
 
     def closeAllSessions(self):
         self.getPappOrmSession()  # Ensure we have a session maker
@@ -62,7 +63,7 @@ class DbConnBase:
             self._dbEngine.connect(), 'alembic_version',
             schema=self._metadata.schema)
 
-        if isDbInitialised:
+        if isDbInitialised and self._enableCreateAll:
             self._doMigration(self._dbEngine)
 
         else:
@@ -75,7 +76,7 @@ class DbConnBase:
         session = session if session else self.getPappOrmSession()
         session.commit()
 
-        while not self._sequenceMutex.testandset():
+        while not self._sequenceMutex.aquire():
             sleep(0.001)
 
         # Something about the backend not updating curval/nextval causes issues when
@@ -88,7 +89,7 @@ class DbConnBase:
                         % (sequence.name, endId + 1))
         session.commit()
 
-        self._sequenceMutex.unlock()
+        self._sequenceMutex.release()
 
         while startId < endId:
             yield startId
@@ -124,6 +125,9 @@ class DbConnBase:
         sourceless = true
         sqlalchemy.url = %(url)s
 
+        [alembic:exclude]
+        tables = spatial_ref_sys
+
         [logging]
         default_level = INFO
         '''
@@ -132,7 +136,7 @@ class DbConnBase:
         cfg %= {'alembicDir': self._alembicDir,
                 'url': self._dbConnectString}
 
-        tempFile = NamedTemporaryFile()
+        tempFile = NamedTemporaryFile('w+t')
         tempFile.write(cfg)
         tempFile.flush()
         return tempFile
