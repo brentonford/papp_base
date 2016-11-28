@@ -1,12 +1,12 @@
 from alembic import context
 from sqlalchemy import engine_from_config, pool
 
-from rapui import LoggingSetup
+from txhttputil import LoggingUtil
 
 
 class AlembicEnvBase:
     def __init__(self, targetMetadata):
-        LoggingSetup.setup()
+        LoggingUtil.setup()
 
         self._config = context.config
         self._targetMetadata = targetMetadata
