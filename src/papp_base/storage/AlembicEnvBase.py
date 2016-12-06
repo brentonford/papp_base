@@ -1,12 +1,11 @@
 from alembic import context
 from sqlalchemy import engine_from_config, pool
-
-from txhttputil import LoggingUtil
+from txhttputil.util.LoggingUtil import setupLogging
 
 
 class AlembicEnvBase:
     def __init__(self, targetMetadata):
-        LoggingUtil.setup()
+        setupLogging()
 
         self._config = context.config
         self._targetMetadata = targetMetadata

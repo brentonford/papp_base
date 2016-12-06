@@ -5,6 +5,7 @@ from papp_base.storage.DbConnBase import DbConnBase
 
 class PappServerMainBase:
     _title = None
+    _angularAdminModule = None
 
     def __init__(self, platform):
         self._platform = platform
@@ -61,3 +62,8 @@ class PappServerMainBase:
     def title(self):
         assert self._title is not None
         return self._title
+
+    @property
+    def angularAdminModule(self):
+        assert self._angularAdminModule is not None
+        return self._angularAdminModule
