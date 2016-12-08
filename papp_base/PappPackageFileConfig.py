@@ -25,9 +25,6 @@ class PappPackageFileConfig(object):
     This class helps with accessing the config for the papp_package.json
     """
 
-    DEFAULT_FILE_CHMOD = 0o600
-    DEFAULT_DIR_CHMOD = 0o700
-
     def __init__(self, pappRootDir: str):
         """
         Constructor
@@ -48,8 +45,17 @@ class PappPackageFileConfig(object):
         self._cfg = ConfigWithWrapper(self._configFilePath)
 
     def _save(self):
+        """ Save
+
+        Saves the config back to the json file.
+        The output will be standard json.
+        """
         save_config(self._configFilePath, self._cfg)
 
     @property
-    def config(self):
+    def config(self) -> ConfigWithWrapper:
+        """ Config
+
+        :return: The jsoncfg config object, for accessing and saving the config.
+        """
         return self._cfg

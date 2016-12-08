@@ -7,15 +7,23 @@ from sqlalchemy.orm.session import Session
 
 from jsoncfg.value_mappers import require_string, require_array
 from papp_base.PappPackageFileConfig import PappPackageFileConfig
-from papp_base.server.PeekServerProviderABC import PeekServerProviderABC
+from papp_base.server.PeekServerPlatformABC import PeekServerPlatformABC
 from papp_base.storage.DbConnBase import DbConnBase
 
 
 class PappServerEntryHookABC(metaclass=ABCMeta):
-    def __init__(self, pappRootDir: str, platform: PeekServerProviderABC):
+    def __init__(self, pappRootDir: str, platform: PeekServerPlatformABC):
         self._platform = platform
         self._pappRootDir = pappRootDir
         self._packageCfg = PappPackageFileConfig(pappRootDir)
+
+    @property
+    def pappRootDir(self) -> str:
+        """ Papp Root Dir
+
+        :return: The absoloute directory where the Papp package is located.
+        """
+        return self._pappRootDir
 
     @property
     def requiresServer(self) -> bool:
@@ -62,12 +70,19 @@ class PappServerEntryHookABC(metaclass=ABCMeta):
 
     @property
     def dbSession(self) -> Session:
+        """ Database Session
+
+        :return: An instance of the sqlalchemy ORM session
+
+        """
         return self._dbConn.getPappOrmSession()
 
     @abstractmethod
     def load(self)-> None:
         """ Load
 
+        This will be called when the papp is loaded, just after the db is migrated.
+        Place any custom initialiastion steps here.
 
         """
 
@@ -81,6 +96,11 @@ class PappServerEntryHookABC(metaclass=ABCMeta):
 
     @abstractmethod
     def stop(self) -> None:
+        """ Stop
+
+        This method is called by the platform to tell the peek app to shutdown and stop
+        everything it's doing
+        """
         pass
 
     @abstractmethod
@@ -123,10 +143,20 @@ class PappServerEntryHookABC(metaclass=ABCMeta):
 
     @property
     def angularMainModule(self) -> str:
+        """ Angular Main Module
+
+        :return: The name of the main module that the Angular2 router will lazy load.
+        """
         return self._angularMainModule
 
     @property
     def angularFrontendDir(self) -> str:
+        """ Angular Frontend Dir
+
+        This directory will be linked into the angular app when it is compiled.
+
+        :return: The absolute path of the Angular2 app directory.
+        """
         relDir = self._packageCfg.config.papp.title(require_string)
         dir = os.path.join(self._pappRoot, relDir)
         if not os.path.isdir(dir): raise NotADirectoryError(dir)

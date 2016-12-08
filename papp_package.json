@@ -1,0 +1,77 @@
+// This file is parsed with the jsoncfg python package
+// It supports comments like this one.
+
+// Directories are the location of papp_package.json
+{
+  // Some details about this Peek App
+  "papp": {
+    "title": "Peek App - Noop",
+    "name": "papp_noop",
+    "version": "#PAPP_VER#",
+    "buildNumber": "#PAPP_BUILD#",
+    "buildDate": "#BUILD_DATE#",
+    "creator": "Synerty Pty Ltd",
+    "website": "www.synerty.com"
+  },
+  // The Peek Platform services that this papp needs to run
+  "requiresServices": [
+    "server",
+    "worker",
+    "agent",
+    "client",
+    "storage"
+  ],
+  // Depencency versions to come, based on https://www.python.org/dev/peps/pep-0440
+  // EG package>=0.2,<0.3
+  // EG package==0.3.0
+  // NO DEPENDENCY SUPPORT AT PRESENT
+  "dependsOn": [
+    // EG "papp_noop"
+  ],
+  // Settings specific to the peek_client service
+  "client": {
+    // Entry Hook, The module and class where the papp can be dynamically loaded
+    "entryHookPackage" : "papp_noop.PappClientEntryHook",
+    "entryHookClass" : "PappClientEntryHook",
+
+    // The directory where the angular2 route is for the client site
+    // EG "frontend/client"
+    "angularFrontendDir": "frontend/client",
+    // The main module for the angular2 route
+    // This must be in the "angularFrontendDir"
+    // EG "papp-noop.module"
+    "angularMainModule": "papp-noop.module"
+  },
+  // Settings specific to the peek_server service
+  "server": {
+    // Entry Hook, The module and class where the papp can be dynamically loaded
+    "entryHookPackage" : "papp_noop.PappServerEntryHook",
+    "entryHookClass" : "PappServerEntryHook",
+    // The directory where the angular2 route is for server admin site
+    // EG "frontend/client"
+    "angularFrontendDir": "frontend/server",
+    // The main module for the angular2 route
+    // This must be in the "angularFrontendDir"
+    // EG "papp-noop.module"
+    "angularMainModule": "papp-noop.module"
+  },
+  // Settings specific to the database service
+  // The database is migrated by the peek_server and used from both the server and worker
+  // services
+  "storage": {
+    // The alembic directory where the database schema migration scripts are stored
+    "alembicDir": "alembic"
+  },
+  // Settings specific to the peek_worker service
+  "worker": {
+    // Entry Hook, The module and class where the papp can be dynamically loaded
+    "entryHookPackage" : "papp_noop.PappWorkerEntryHook",
+    "entryHookClass" : "PappWorkerEntryHook"
+  },
+  // Settings specific to the peek_agent service
+  "agent": {
+    // Entry Hook, The module and class where the papp can be dynamically loaded
+    "entryHookPackage" : "papp_noop.PappAgentEntryHook",
+    "entryHookClass" : "PappAgentEntryHook"
+  }
+}

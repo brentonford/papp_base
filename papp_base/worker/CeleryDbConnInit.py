@@ -1,3 +1,4 @@
+import imp
 import logging
 
 from celery.signals import worker_process_init, worker_process_shutdown, worker_init, \
@@ -5,7 +6,6 @@ from celery.signals import worker_process_init, worker_process_shutdown, worker_
 
 from papp_base.worker import CeleryDbConn
 from papp_base.worker.CeleryDbConn import getDbSession
-import imp
 
 logger = logging.getLogger(__name__)
 
