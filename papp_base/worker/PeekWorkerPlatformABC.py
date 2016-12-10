@@ -2,7 +2,7 @@ from abc import ABCMeta, abstractproperty, abstractmethod
 from typing import Mapping
 
 
-class PeekWorkerProviderABC(metaclass=ABCMeta):
+class PeekWorkerPlatformABC(metaclass=ABCMeta):
     # @abstractproperty
     # def celeryApp(self):
     #     """ Celery App

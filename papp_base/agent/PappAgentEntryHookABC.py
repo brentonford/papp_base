@@ -1,26 +1,14 @@
-from abc import abstractmethod, ABCMeta
 from typing import Optional
 
-from papp_base.agent.PeekAgentPlatformABC import PeekAgentPlatformABC
+from papp_base.PappCommonEntryHookABC import PappCommonEntryHookABC
+from papp_base.worker.PeekWorkerPlatformABC import PeekWorkerPlatformABC
 
 
-class PappAgentEntryHookABC(metaclass=ABCMeta):
+class PappAgentEntryHookABC(PappCommonEntryHookABC):
 
-    def __init__(self, platform:PeekAgentPlatformABC):
+    def __init__(self, pappName: str, pappRootDir: str, platform: PeekWorkerPlatformABC):
+        PappCommonEntryHookABC.__init__(self, pappName=pappName, pappRootDir=pappRootDir)
         self._platform = platform
-        self._initSelf()
-
-    @abstractmethod
-    def start(self):
-        pass
-
-    @abstractmethod
-    def stop(self):
-        pass
-
-    @abstractmethod
-    def unload(self):
-        pass
 
     @property
     def publishedAgentApi(self, requestingPappName:str) -> Optional[object]:
