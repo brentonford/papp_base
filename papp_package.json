@@ -30,13 +30,9 @@
   ],
   // Settings specific to the peek_client service
   "client": {
-    // Entry Hook, The module and class where the papp can be dynamically loaded
-    "entryHookPackage" : "papp_noop.PappClientEntryHook",
-    "entryHookClass" : "PappClientEntryHook",
-
     // The directory where the angular2 route is for the client site
     // EG "frontend/client"
-    "angularFrontendDir": "frontend/client",
+    "angularFrontendDir": "client_fe",
     // The main module for the angular2 route
     // This must be in the "angularFrontendDir"
     // EG "papp-noop.module"
@@ -44,12 +40,9 @@
   },
   // Settings specific to the peek_server service
   "server": {
-    // Entry Hook, The module and class where the papp can be dynamically loaded
-    "entryHookPackage" : "papp_noop.PappServerEntryHook",
-    "entryHookClass" : "PappServerEntryHook",
     // The directory where the angular2 route is for server admin site
     // EG "frontend/client"
-    "angularFrontendDir": "frontend/server",
+    "angularFrontendDir": "server_fe",
     // The main module for the angular2 route
     // This must be in the "angularFrontendDir"
     // EG "papp-noop.module"
@@ -64,14 +57,8 @@
   },
   // Settings specific to the peek_worker service
   "worker": {
-    // Entry Hook, The module and class where the papp can be dynamically loaded
-    "entryHookPackage" : "papp_noop.PappWorkerEntryHook",
-    "entryHookClass" : "PappWorkerEntryHook"
   },
   // Settings specific to the peek_agent service
   "agent": {
-    // Entry Hook, The module and class where the papp can be dynamically loaded
-    "entryHookPackage" : "papp_noop.PappAgentEntryHook",
-    "entryHookClass" : "PappAgentEntryHook"
   }
 }

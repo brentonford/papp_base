@@ -15,7 +15,8 @@
 import logging
 import os
 
-from jsoncfg.functions import save_config, ConfigWithWrapper
+from jsoncfg.config_classes import ConfigNode
+from jsoncfg.functions import load_config
 
 logger = logging.getLogger(__name__)
 
@@ -42,18 +43,10 @@ class PappPackageFileConfig(object):
             with open(self._configFilePath, 'w') as fobj:
                 fobj.write('{}')
 
-        self._cfg = ConfigWithWrapper(self._configFilePath)
-
-    def _save(self):
-        """ Save
-
-        Saves the config back to the json file.
-        The output will be standard json.
-        """
-        save_config(self._configFilePath, self._cfg)
+        self._cfg = load_config(self._configFilePath)
 
     @property
-    def config(self) -> ConfigWithWrapper:
+    def config(self) -> ConfigNode:
         """ Config
 
         :return: The jsoncfg config object, for accessing and saving the config.

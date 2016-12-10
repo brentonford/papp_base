@@ -1,53 +1,19 @@
 import os
-from abc import ABCMeta, abstractmethod, abstractproperty
 from typing import Optional
 
 from sqlalchemy import MetaData
 from sqlalchemy.orm.session import Session
 
-from jsoncfg.value_mappers import require_string, require_array
-from papp_base.PappPackageFileConfig import PappPackageFileConfig
+from jsoncfg.value_mappers import require_string
+from papp_base.PappCommonEntryHookABC import PappCommonEntryHookABC
 from papp_base.server.PeekServerPlatformABC import PeekServerPlatformABC
 from papp_base.storage.DbConnBase import DbConnBase
 
 
-class PappServerEntryHookABC(metaclass=ABCMeta):
-    def __init__(self, pappRootDir: str, platform: PeekServerPlatformABC):
+class PappServerEntryHookABC(PappCommonEntryHookABC):
+    def __init__(self, pappName: str, pappRootDir: str, platform: PeekServerPlatformABC):
+        PappCommonEntryHookABC.__init__(self, pappName=pappName, pappRootDir=pappRootDir)
         self._platform = platform
-        self._pappRootDir = pappRootDir
-        self._packageCfg = PappPackageFileConfig(pappRootDir)
-
-    @property
-    def pappRootDir(self) -> str:
-        """ Papp Root Dir
-
-        :return: The absoloute directory where the Papp package is located.
-        """
-        return self._pappRootDir
-
-    @property
-    def requiresServer(self) -> bool:
-        """ Requires Server
-
-        Determines if this papp requires the platforms server service from the
-        papp_package.json
-
-        :return: True if this papp requires the server service
-
-        """
-        return "server" in self._packageCfg.config.requiresServices(require_array)
-
-    @property
-    def requiresStorage(self) -> bool:
-        """ Requires Storage
-
-        Determines if this papp requires the platforms storage "service" from the
-        papp_package.json
-
-        :return: True if this papp requires use of the storage database
-
-        """
-        return "storage" in self._packageCfg.config.requiresServices(require_array)
 
     def migrateStorageSchema(self, metadata: MetaData) -> None:
         """ Initialise the DB
@@ -57,7 +23,7 @@ class PappServerEntryHookABC(metaclass=ABCMeta):
         """
 
         relDir = self._packageCfg.config.storage.alembicDir(require_string)
-        alembicDir = os.path.join(self._pappRoot, relDir)
+        alembicDir = os.path.join(self.rootDir, relDir)
         if not os.path.isdir(alembicDir): raise NotADirectoryError(alembicDir)
 
         self._dbConn = DbConnBase(
@@ -76,41 +42,6 @@ class PappServerEntryHookABC(metaclass=ABCMeta):
 
         """
         return self._dbConn.getPappOrmSession()
-
-    @abstractmethod
-    def load(self)-> None:
-        """ Load
-
-        This will be called when the papp is loaded, just after the db is migrated.
-        Place any custom initialiastion steps here.
-
-        """
-
-    @abstractmethod
-    def start(self) -> None:
-        """ Start
-
-        This method is called by the platform when the papp should start
-        """
-        pass
-
-    @abstractmethod
-    def stop(self) -> None:
-        """ Stop
-
-        This method is called by the platform to tell the peek app to shutdown and stop
-        everything it's doing
-        """
-        pass
-
-    @abstractmethod
-    def unload(self) -> None:
-        """Unload
-
-        This method is called after stop is called, to unload any last resources
-        before the PAPP is unlinked from the platform
-        """
-        pass
 
     @property
     def publishedServerApi(self, requestingPappName: str) -> Optional[object]:
@@ -133,13 +64,6 @@ class PappServerEntryHookABC(metaclass=ABCMeta):
         the platform.
         """
         return None
-
-    @property
-    def title(self) -> str:
-        """ Peek App Title
-        :return the title of this papp
-        """
-        return self._packageCfg.config.papp.title(require_string)
 
     @property
     def angularMainModule(self) -> str:

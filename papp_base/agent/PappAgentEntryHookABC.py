@@ -4,7 +4,7 @@ from typing import Optional
 from papp_base.agent.PeekAgentPlatformABC import PeekAgentPlatformABC
 
 
-class PappAgentEntryPointABC(metaclass=ABCMeta):
+class PappAgentEntryHookABC(metaclass=ABCMeta):
 
     def __init__(self, platform:PeekAgentPlatformABC):
         self._platform = platform
