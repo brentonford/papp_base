@@ -7,7 +7,7 @@ from sqlalchemy.orm.session import Session
 from jsoncfg.value_mappers import require_string
 from papp_base.PappCommonEntryHookABC import PappCommonEntryHookABC
 from papp_base.server.PeekServerPlatformHookABC import PeekServerPlatformHookABC
-from papp_base.storage.DbConnBase import DbConnBase
+from papp_base.storage.DbConnection import DbConnection
 
 
 class PappServerEntryHookABC(PappCommonEntryHookABC):
@@ -26,7 +26,7 @@ class PappServerEntryHookABC(PappCommonEntryHookABC):
         alembicDir = os.path.join(self.rootDir, relDir)
         if not os.path.isdir(alembicDir): raise NotADirectoryError(alembicDir)
 
-        self._dbConn = DbConnBase(
+        self._dbConn = DbConnection(
             dbConnectString=self.platform.dbConnectString,
             metadata=metadata,
             alembicDir=alembicDir
@@ -41,7 +41,7 @@ class PappServerEntryHookABC(PappCommonEntryHookABC):
         :return: An instance of the sqlalchemy ORM session
 
         """
-        return self._dbConn.getPappOrmSession()
+        return self._dbConn.ormSession()
 
     @property
     def publishedServerApi(self, requestingPappName: str) -> Optional[object]:
