@@ -1,4 +1,4 @@
-import imp
+import importlib
 import logging
 
 from celery.signals import worker_process_init, worker_process_shutdown, worker_init, \
@@ -28,7 +28,7 @@ def initWorkerProcessDbConn(**kwargs):
     # The next call to CeleryDbConn.dbEngine property will create a new engine
     # with this connection string
     from papp_base.worker import CeleryDbConn
-    CeleryDbConn = imp.reload(CeleryDbConn)
+    CeleryDbConn = importlib.reload(CeleryDbConn)
 
     CeleryDbConn._dbConnectString = __WorkerInit.dbConnectString
 

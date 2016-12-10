@@ -3,11 +3,11 @@ from abc import abstractproperty
 from celery.app.base import Celery
 
 from papp_base.PappCommonEntryHookABC import PappCommonEntryHookABC
-from papp_base.worker.PeekWorkerPlatformABC import PeekWorkerPlatformABC
+from papp_base.worker.PeekWorkerPlatformHookABC import PeekWorkerPlatformHookABC
 
 
 class PappWorkerEntryHookABC(PappCommonEntryHookABC):
-    def __init__(self, pappName: str, pappRootDir: str, platform: PeekWorkerPlatformABC):
+    def __init__(self, pappName: str, pappRootDir: str, platform: PeekWorkerPlatformHookABC):
         PappCommonEntryHookABC.__init__(self, pappName=pappName, pappRootDir=pappRootDir)
         self._platform = platform
 

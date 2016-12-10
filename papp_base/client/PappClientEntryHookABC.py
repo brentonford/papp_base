@@ -3,11 +3,11 @@ from typing import Optional
 
 from jsoncfg.value_mappers import require_string
 from papp_base.PappCommonEntryHookABC import PappCommonEntryHookABC
-from papp_base.client.PeekClientPlatformABC import PeekClientPlatformABC
+from papp_base.client.PeekClientPlatformHookABC import PeekClientPlatformHookABC
 
 
 class PappClientEntryHookABC(PappCommonEntryHookABC):
-    def __init__(self, pappName: str, pappRootDir: str, platform: PeekClientPlatformABC):
+    def __init__(self, pappName: str, pappRootDir: str, platform: PeekClientPlatformHookABC):
         PappCommonEntryHookABC.__init__(self, pappName=pappName, pappRootDir=pappRootDir)
         self._platform = platform
 

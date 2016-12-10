@@ -2,7 +2,7 @@ from abc import ABCMeta, abstractmethod
 from typing import Optional
 
 
-class PeekPlatformCommonABC(metaclass=ABCMeta):
+class PeekPlatformCommonHookABC(metaclass=ABCMeta):
 
     @abstractmethod
     def getOtherPappApi(self, pappName:str) -> Optional[object]:

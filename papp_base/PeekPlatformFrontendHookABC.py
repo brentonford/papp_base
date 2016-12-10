@@ -6,7 +6,7 @@ from txhttputil.site.BasicResource import BasicResource
 from txhttputil.site.FileUnderlayResource import FileUnderlayResource
 
 
-class PeekPlatformFrontendABC(metaclass=ABCMeta):
+class PeekPlatformFrontendHookABC(metaclass=ABCMeta):
     def __init__(self):
         self.__rootResource = FileUnderlayResource()
 

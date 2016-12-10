@@ -6,12 +6,12 @@ from sqlalchemy.orm.session import Session
 
 from jsoncfg.value_mappers import require_string
 from papp_base.PappCommonEntryHookABC import PappCommonEntryHookABC
-from papp_base.server.PeekServerPlatformABC import PeekServerPlatformABC
+from papp_base.server.PeekServerPlatformHookABC import PeekServerPlatformHookABC
 from papp_base.storage.DbConnBase import DbConnBase
 
 
 class PappServerEntryHookABC(PappCommonEntryHookABC):
-    def __init__(self, pappName: str, pappRootDir: str, platform: PeekServerPlatformABC):
+    def __init__(self, pappName: str, pappRootDir: str, platform: PeekServerPlatformHookABC):
         PappCommonEntryHookABC.__init__(self, pappName=pappName, pappRootDir=pappRootDir)
         self._platform = platform
 

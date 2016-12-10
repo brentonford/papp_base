@@ -1,0 +1,6 @@
+from papp_base.PeekPlatformCommonHookABC import PeekPlatformCommonHookABC
+from papp_base.PeekPlatformFrontendHookABC import PeekPlatformFrontendHookABC
+
+
+class PeekClientPlatformHookABC(PeekPlatformCommonHookABC, PeekPlatformFrontendHookABC):
+    pass
