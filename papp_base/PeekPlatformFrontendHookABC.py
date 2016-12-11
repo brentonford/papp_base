@@ -1,7 +1,5 @@
 from abc import ABCMeta
 
-from twisted.web.resource import Resource
-
 from txhttputil.site.BasicResource import BasicResource
 from txhttputil.site.FileUnderlayResource import FileUnderlayResource
 
