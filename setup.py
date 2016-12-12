@@ -5,7 +5,7 @@ from distutils.core import setup
 from setuptools import find_packages
 
 package_name = "papp_base"
-package_version = '0.0.2'
+package_version = '0.0.4'
 
 egg_info = "%s.egg-info" % package_name
 if os.path.isdir(egg_info):
